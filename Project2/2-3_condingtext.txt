@@ -1,0 +1,342 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <map>
+#include <cmath>
+#include <stdlib.h>
+#include <string.h>
+
+using namespace std;
+
+//#define _TEST 1
+
+const int DICE = 4;
+
+void make_dice_map(int v[4], map<int, int>& m)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (m.find(v[i]) != m.end())
+        {
+            //cout << i << " " << v[i] << " " << m[v[i]] << endl;
+            m[v[i]] = m[v[i]] + 1;
+            //cout << i << " " << v[i] << " " << m[v[i]] << endl;
+        }
+        else
+        {
+            m.insert(make_pair(v[i], 1));
+        }
+    }
+
+   // #if defined(_TEST)
+    std::cout << "==========\n";
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        std::cout << itr->first << " " << itr->second << '\n';
+    }
+    std::cout << "==========\n";
+   // #endif
+}
+
+int result_condition1(map<int, int>& m)
+{
+    if (m.size() == 0)
+        return 0;
+    
+    int answer = 0;
+    int p = 0;
+    int q = 0;
+    int r = 0;
+    int s = 0;
+
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        if (itr->second == 4)
+        {
+            if (p == 0)
+                p = itr->first;
+        }
+    }
+
+   // cout << "p: " << p << endl;
+    
+    if (p > 0)
+    {
+        answer = 1111 * p;
+
+    }
+
+    return answer;
+}
+
+int result_condition2(map<int, int>& m)
+{
+    if (m.size() == 0)
+        return 0;
+
+    int answer = 0;
+    int p = 0;
+    int q = 0;
+    int r = 0;
+    int s = 0;
+
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        if (itr->second == 3)
+        {
+            if (p == 0)
+                p = itr->first;
+
+        }
+        else //if (itr->second == 1)
+        {
+            if (q == 0)
+                q = itr->first;
+        }
+    }
+
+    if (p > 0 && q > 0)
+    {
+        answer = std::pow((10 * p + q), 2);
+    }
+
+    return answer;
+}
+
+int result_condition3(map<int, int>& m)
+{
+    if (m.size() == 0)
+        return 0;
+
+    int answer = 0;
+    int p = 0;
+    int q = 0;
+    int r = 0;
+    int s = 0;
+
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        if (itr->second == 2)
+        {
+            if (p == 0)
+                p = itr->first;
+            else if (q == 0)
+                q = itr->first;
+        }
+        else
+        {
+        }
+    }
+
+    if (p > 0 && q > 0)
+    {
+        answer = (p + q) * abs(p - q);
+    }
+    
+    return answer;
+}
+
+int result_condition4(map<int, int>& m)
+{
+    if (m.size() == 0)
+        return 0;
+
+    int answer = 0;
+    int p = 0;
+    int q = 0;
+    int r = 0;
+    int s = 0;
+
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        if (itr->second == 2)
+        {
+            if (p == 0)
+                p = itr->first;
+
+        }
+        else
+        {
+            if (q == 0)
+                q = itr->first;
+            else if (r == 0)
+                r = itr->first;
+        }
+    }
+
+    if (p > 0 && q > 0 && r > 0)
+    {
+        answer = q * r;
+    }
+
+    return answer;
+}
+
+int result_condition5(map<int, int>& m)
+{
+    if (m.size() == 0)
+        return 0;
+
+    int answer = 0;
+    int p = 0;
+    int q = 0;
+    int r = 0;
+    int s = 0;
+
+    //if (m.size() == 4) // 4개 이면 모두 다른 값이다.
+
+    for (auto itr = m.begin(); itr != m.end(); itr++)
+    {
+        if (itr->second == 1)
+        {
+            if (p == 0)
+                p = itr->first;
+
+            else if (q == 0)
+                q = itr->first;
+
+            else if (r == 0)
+                r = itr->first;
+
+            else if (s == 0)
+                s = itr->first;
+        }
+    }
+
+    // p,q,r,s 4개값이 채워지면 이미 모두 다른 값이다.
+    if (p > 0 && q > 0 && r > 0 && s > 0)
+    {
+        answer = p; // 정렬했으므로 p가 가장 작다.
+    }
+
+    return answer;
+}
+
+int solution(int a, int b, int c, int d) 
+{
+    int answer = 0;
+
+    int v[4] = { a, b, c, d };
+
+    sort(v + 0, v + 3);
+
+    map<int, int> m;
+    make_dice_map(v, m);
+
+    answer = result_condition1(m);
+    if (answer > 0)
+    {
+        return answer;
+    }
+
+
+    answer = result_condition2(m);
+    if (answer > 0)
+    {
+        return answer;
+    }
+
+    answer = result_condition3(m);
+    if (answer > 0)
+    {
+        return answer;
+    }
+
+    answer = result_condition4(m);
+    if (answer > 0)
+    {
+        return answer;
+    }
+
+    answer = result_condition5(m);
+    if (answer > 0)
+    {
+        return answer;
+    }
+
+    return answer;
+}
+
+int strtoi(char* str)
+{
+    if (str == nullptr || strlen(str) == 0)
+        return -1;
+
+    return strtol(str, NULL, 10);
+}
+
+
+int check_dice(int a, int b, int c, int d)
+{
+    if (a < 1 || 6 < a) return -1;
+    if (b < 1 || 6 < b) return -1;
+    if (c < 1 || 6 < c) return -1;
+    if (d < 1 || 6 < d) return -1;
+
+    return 0;
+}
+
+int main(int argc, char** argv)
+{
+    int a;
+    int b;
+    int c;
+    int d;
+    int result;
+
+#if _TEST
+ 
+    // condition1
+    result = solution(2, 2, 2, 2);
+
+    std::cout << result << std::endl;
+
+    // condition2
+    result = solution(4, 1, 4, 4);
+
+    std::cout << result << std::endl;
+
+    // condition3
+    result = solution(6, 3, 3, 6);
+
+    std::cout << result << std::endl;
+
+    // condition4
+    result = solution(2, 5, 2, 6);
+
+    std::cout << result << std::endl;
+
+    // condition5
+    result = solution(6, 4, 2, 5);
+
+    std::cout << result << std::endl;
+#else
+
+    if (argc >= 5)
+    {
+        a = strtoi(argv[1]);
+        b = strtoi(argv[2]);
+        c = strtoi(argv[3]);
+        d = strtoi(argv[4]);
+    }
+    else
+    {
+        std::cin >> a >> b >> c >> d;
+    }
+
+
+    if (check_dice(a, b, c, d) == -1)
+    {
+        std::cout << "[DICE] out of range: (1~6)" << std::endl;
+        return -1;
+    }
+
+    result = solution(a, b, c, d);
+
+    std::cout << result << std::endl;
+#endif
+
+    return 0;
+}

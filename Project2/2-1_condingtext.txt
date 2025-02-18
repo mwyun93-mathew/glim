@@ -1,0 +1,130 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stdlib.h>
+#include <string.h>
+
+using namespace std;
+
+const int N = 12000;
+const int K = 2000;
+
+void currency_format(char* src, char* dst)
+{
+    if (src == NULL || dst == NULL)
+        return;
+
+    int n = strlen(src);
+    if (n == 0)
+        return;
+
+    int j = 0;
+    for (int i = 0; i < n; i++)
+    {
+        dst[j++] = src[i];
+
+        if (0 < i && i < (n-1) && (n - i - 1) % 3 == 0)
+            dst[j++] = ',';
+    }
+
+    dst[j] = '\0';
+}
+
+void result_format(int result, char* result_out)
+{
+    if (result_out == NULL)
+        return;
+
+    char result_in[100];
+    //char result_out[100];
+#if defined(_WIN32)
+    sprintf_s(result_in, "%d", result);
+#else
+    sprintf(result_in, "%d", result);
+#endif
+    currency_format(result_in, result_out);
+}
+
+int solution(int n, int k) {
+    
+    if (n <= 0 || 1000 <= n)
+    {
+        std::cout << "out of range: n argument" << std::endl;
+
+        return -1;
+    }
+
+    if (((n / 10) > k) || 1000 <= k)
+    {
+        std::cout << "out of range: k argument" << std::endl;
+
+        return -1;
+    }
+    
+    int answer = 0;
+    int service = 0;
+    
+    //if (n >= 10)
+    //    service = n / 10; // 정수 버림
+    service = n / 10;
+
+    answer = (n * N) + (k * K) - (service * K);
+
+    return answer;
+}
+
+
+int strtoi(char* str)
+{
+    if (str == nullptr || strlen(str) == 0)
+        return - 1;
+
+    return strtol(str, NULL, 10);
+}
+
+
+
+
+int main(int argc, char** argv)
+{
+    int n = 0;
+    int k = 0;
+
+    if (argc >= 2)
+    {
+        n = strtoi(argv[1]);
+        k = strtoi(argv[2]);
+    }
+    else
+    {
+        std::cout << "n: ";
+        std::cin >> n;
+
+        std::cout << "k: ";
+        std::cin >> k;
+    }
+
+    if (n == -1)
+    {
+        std::cout << "invalid n argument" << std::endl;
+
+        return -1;
+    }
+
+    if (k == -1)
+    {
+        std::cout << "invalid k argument" << std::endl;
+
+        return -1;
+    }
+
+    int result = solution(n, k);
+
+    char result_out[100];
+
+    result_format(result, result_out);
+
+    std::cout << "result: " << result_out << std::endl;
+
+    return 0;
+}
